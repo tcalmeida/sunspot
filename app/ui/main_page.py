@@ -14,74 +14,94 @@ from app.config.settings import (
 from app.domain.diagnostics import SunExposureResult, calculate_sun_exposure
 from app.services.geolocation import geocode_address
 from app.services.solar import calculate_solar_position
+from app.ui.i18n import TRANSLATIONS, Strings
 from app.utils.exceptions import GeocodingError, SolarCalculationError
 
 logger = logging.getLogger(__name__)
 
+_LANGUAGES = list(TRANSLATIONS.keys())
 
-def render_inputs() -> tuple[str, float, str]:
+
+def _get_strings() -> Strings:
+    """Return the string set for the currently selected language."""
+    lang: str = st.session_state.get("language", "Português")
+    return TRANSLATIONS[lang]
+
+
+def render_language_selector() -> None:
+    """Render the language toggle in the sidebar."""
+    st.sidebar.selectbox(
+        "🌐 Language / Idioma",
+        options=_LANGUAGES,
+        key="language",
+    )
+
+
+def render_inputs(s: Strings) -> tuple[str, float, str]:
     """Render the input widgets and return user-provided values.
 
+    Args:
+        s: Localized string set.
+
     Returns:
-        A tuple of (address, window_azimuth, season) where season is
-        either "Verão" or "Inverno".
+        A tuple of (address, window_azimuth, season_key) where season_key
+        is the localized summer or winter label.
     """
     address: str = st.text_input(
-        "📍 Endereço do imóvel",
-        placeholder="Ex: Rua das Flores, 123, São Paulo, SP",
+        s["address_label"],
+        placeholder=s["address_placeholder"],
     )
 
     window_azimuth: float = float(
         st.slider(
-            "🧭 Ângulo da janela principal (azimute)",
+            s["azimuth_label"],
             min_value=0,
             max_value=359,
             value=90,
             step=1,
-            help="0° = Norte, 90° = Leste, 180° = Sul, 270° = Oeste",
+            help=s["azimuth_help"],
         )
     )
 
     season: str = st.radio(
-        "📅 Época do ano",
-        options=["Verão", "Inverno"],
+        s["season_label"],
+        options=[s["season_summer"], s["season_winter"]],
         horizontal=True,
     )  # type: ignore[assignment]
 
     return address, window_azimuth, season
 
 
-def render_results(result: SunExposureResult) -> None:
+def render_results(result: SunExposureResult, s: Strings) -> None:
     """Display solar exposure metrics, orientation and recommendations.
 
     Args:
         result: Computed solar exposure result to display.
+        s: Localized string set.
     """
     st.divider()
-    st.subheader("☀️ Resultado")
+    st.subheader(s["result_header"])
 
     if not result.has_sun:
-        st.warning(
-            "Este imóvel não recebe incidência direta de sol nesta época do ano."
-        )
+        st.warning(s["no_sun_warning"])
     else:
         start_str = result.start_time.strftime("%H:%M") if result.start_time else "—"
         end_str = result.end_time.strftime("%H:%M") if result.end_time else "—"
 
         col1, col2, col3 = st.columns(3)
         with col1:
-            st.metric("Início", start_str)
+            st.metric(s["metric_start"], start_str)
         with col2:
-            st.metric("Fim", end_str)
+            st.metric(s["metric_end"], end_str)
         with col3:
             hours = int(result.total_hours)
             minutes = round((result.total_hours - hours) * 60)
-            st.metric("Total", f"{hours}h {minutes:02d}m")
+            st.metric(s["metric_total"], f"{hours}h {minutes:02d}m")
 
-    st.markdown(f"**🧭 Fachada:** {result.orientation.value}")
+    st.markdown(f"**{s['facade_label']}** {result.orientation.value}")
 
     if result.recommendations:
-        st.subheader("💡 Recomendações")
+        st.subheader(s["recommendations_header"])
         for tip in result.recommendations:
             st.markdown(f"• {tip}")
 
@@ -96,27 +116,30 @@ def render_error(message: str) -> None:
 
 
 def render_main_page() -> None:
-    """Render the full main page: inputs, calculation trigger and results."""
+    """Render the full main page: language selector, inputs, calculation and results."""
+    render_language_selector()
+
+    s = _get_strings()
+
     st.title("☀️ Sunspot")
-    st.subheader("Descubra o sol do seu próximo lar")
+    st.subheader(s["subtitle"])
 
-    address, window_azimuth, season = render_inputs()
+    address, window_azimuth, season = render_inputs(s)
 
-    if st.button("Calcular Incidência Solar", type="primary"):
+    if st.button(s["button_calculate"], type="primary"):
         if not address.strip():
-            render_error("Por favor, informe o endereço do imóvel.")
+            render_error(s["error_empty_address"])
             return
 
-        date: datetime.date = SUMMER_SOLSTICE if season == "Verão" else WINTER_SOLSTICE
+        is_summer = season == s["season_summer"]
+        date: datetime.date = SUMMER_SOLSTICE if is_summer else WINTER_SOLSTICE
 
-        with st.spinner("Calculando..."):
+        with st.spinner(s["spinner"]):
             try:
                 location = geocode_address(address)
             except GeocodingError as exc:
                 logger.warning("Geocoding failed for %r: %s", address, exc)
-                render_error(
-                    "Endereço não encontrado. Verifique o endereço e tente novamente."
-                )
+                render_error(s["error_geocoding"])
                 return
 
             try:
@@ -127,9 +150,7 @@ def render_main_page() -> None:
                 )
             except SolarCalculationError as exc:
                 logger.error("Solar calculation failed: %s", exc)
-                render_error(
-                    "Erro ao calcular a posição solar. Tente novamente mais tarde."
-                )
+                render_error(s["error_solar"])
                 return
 
             result = calculate_sun_exposure(
@@ -139,4 +160,4 @@ def render_main_page() -> None:
                 min_elevation=MIN_SOLAR_ELEVATION_DEGREES,
             )
 
-        render_results(result)
+        render_results(result, s)
