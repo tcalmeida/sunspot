@@ -80,14 +80,18 @@ Este documento especifica as dependências de software necessárias para desenvo
 
 ## Installation Instructions
 
-### 1. Criar ambiente virtual (recomendado)
+### 1. Criar ambiente virtual com `.venv`
+
+O ambiente virtual **deve** ser criado com o nome `.venv` para isolar as dependências do projeto e não poluir a instalação global do Python na máquina host.
 
 ```bash
-python3.11 -m venv venv
-source venv/bin/activate  # Linux/macOS
+python3.10 -m venv .venv
+source .venv/bin/activate  # Linux/macOS
 # ou
-venv\Scripts\activate  # Windows
+.venv\Scripts\activate     # Windows
 ```
+
+> Certifique-se de que `.venv` está no `.gitignore` antes de qualquer commit.
 
 ### 2. Instalar dependências
 
@@ -95,9 +99,17 @@ venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 ```
 
+### 3. Executar a aplicação
+
+```bash
+streamlit run app.py
+```
+
+> Todos os comandos (`pip`, `ruff`, `black`, `mypy`, `streamlit`) devem ser executados com o `.venv` ativado.
+
 ## Compatibility
 
-- **Python:** 3.11+
+- **Python:** 3.10
 - **Sistemas Operacionais:** Linux, macOS, Windows
 - **Navegadores:** Chrome, Firefox, Safari, Edge (para Streamlit)
 

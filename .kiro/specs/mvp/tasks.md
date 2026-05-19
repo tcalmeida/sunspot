@@ -6,10 +6,10 @@ MVP da aplicação Sunspot: web app em Python/Streamlit que traduz dados astron�
 
 ## Tasks
 
-- [ ] 1. Criar estrutura de pastas do projeto: `app/ui/`, `app/services/`, `app/domain/`, `app/utils/`, `app/config/`, com todos os arquivos `__init__.py` em cada módulo
-- [ ] 2. Criar `app.py` como entry point mínimo do Streamlit (título e layout inicial) e verificar que `streamlit run app.py` executa sem erros
-- [ ] 3. Criar `pyproject.toml` com configuração de `ruff`, `black` e `mypy --strict`, e `.env.example` com as variáveis de ambiente esperadas
-- [ ] 4. Implementar `app/config/settings.py` com todas as constantes: `APP_NAME`, `NOMINATIM_USER_AGENT`, `GEOCODING_TIMEOUT_SECONDS`, `SOLAR_INTERVAL_MINUTES`, `MIN_SOLAR_ELEVATION_DEGREES`, `ANGULAR_TOLERANCE_DEGREES`, `SUMMER_SOLSTICE` e `WINTER_SOLSTICE`; carregar `NOMINATIM_USER_AGENT` via variável de ambiente com fallback
+- [x] 1. Criar estrutura de pastas do projeto: `app/ui/`, `app/services/`, `app/domain/`, `app/utils/`, `app/config/`, com todos os arquivos `__init__.py` em cada módulo
+- [x] 2. Criar `app.py` como entry point mínimo do Streamlit (título e layout inicial) e verificar que `streamlit run app.py` executa sem erros
+- [x] 3. Criar `pyproject.toml` com configuração de `ruff`, `black` e `mypy --strict`, e `.env.example` com as variáveis de ambiente esperadas
+- [x] 4. Implementar `app/config/settings.py` com todas as constantes: `APP_NAME`, `NOMINATIM_USER_AGENT`, `GEOCODING_TIMEOUT_SECONDS`, `SOLAR_INTERVAL_MINUTES`, `MIN_SOLAR_ELEVATION_DEGREES`, `ANGULAR_TOLERANCE_DEGREES`, `SUMMER_SOLSTICE` e `WINTER_SOLSTICE`; carregar `NOMINATIM_USER_AGENT` via variável de ambiente com fallback
 - [ ] 5. Implementar `app/utils/exceptions.py` com a hierarquia de exceções: `SunspotError`, `GeocodingError(SunspotError)` e `SolarCalculationError(SunspotError)`
 - [ ] 6. Implementar `app/utils/angle.py` com `angular_difference(a: float, b: float) -> float` que retorna a diferença mínima entre dois ângulos com wrap-around correto (resultado sempre em `[0°, 180°]`)
 - [ ] 7. Implementar `app/services/geolocation.py` com dataclass `GeoLocation` e função `geocode_address(address: str) -> GeoLocation` usando `geopy.geocoders.Nominatim`; tratar timeout, endereço não encontrado e erros de serviço lançando `GeocodingError`; adicionar logging para falhas

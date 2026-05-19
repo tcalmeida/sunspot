@@ -1,0 +1,39 @@
+[project]
+name = "sunspot"
+version = "0.1.0"
+description = "Web app que traduz dados astronômicos de trajetória solar em diagnósticos práticos para inquilinos"
+requires-python = ">=3.10"
+dependencies = [
+    "streamlit>=1.28.0",
+    "geopy>=2.3.0",
+    "pvlib>=0.10.0",
+    "pandas>=2.0.0",
+    "pytz>=2023.3",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+    "black>=23.0.0",
+    "mypy>=1.5.0",
+    "pytest",
+    "pytest-cov",
+    "bandit",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "C4", "SIM"]
+ignore = []
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true

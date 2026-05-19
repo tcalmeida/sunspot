@@ -2,7 +2,7 @@
 
 ## Python Version
 
-* Python >= 3.11
+* Python 3.10
 * Use modern language features
 * Avoid deprecated APIs
 
@@ -33,10 +33,37 @@ str | None
 
 ---
 
+## Virtual Environment (Mandatory)
+
+* Always use `.venv` for dependency isolation — never install packages globally on the host machine
+* The virtual environment directory **must** be named `.venv` (not `venv`, `env`, or any other name)
+* `.venv` must be listed in `.gitignore` to avoid committing it to version control
+* All commands (`pip`, `ruff`, `black`, `mypy`, `pytest`, `streamlit`) must be run inside the activated `.venv`
+
+### Setup
+
+```bash
+python3.10 -m venv .venv
+source .venv/bin/activate   # Linux/macOS
+# or
+.venv\Scripts\activate      # Windows
+```
+
+### Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+> **Why `.venv`?** Keeps all installed packages scoped to the project, prevents version conflicts between projects, and avoids polluting the host machine's global Python installation.
+
+---
+
 ## Project Structure
 
 ```text
 project/
+├── .venv/          # virtual environment — never committed
 ├── app/
 ├── tests/
 ├── scripts/
