@@ -8,14 +8,13 @@ import streamlit as st
 from app.config.settings import (
     ANGULAR_TOLERANCE_DEGREES,
     MIN_SOLAR_ELEVATION_DEGREES,
-    SUMMER_SOLSTICE,
-    WINTER_SOLSTICE,
 )
 from app.domain.diagnostics import SunExposureResult, calculate_sun_exposure
 from app.services.geolocation import geocode_address
 from app.services.solar import calculate_solar_position
 from app.ui.i18n import TRANSLATIONS, Strings
 from app.utils.exceptions import GeocodingError, SolarCalculationError
+from app.utils.season import resolve_solstice_date
 
 logger = logging.getLogger(__name__)
 
@@ -132,7 +131,6 @@ def render_main_page() -> None:
             return
 
         is_summer = season == s["season_summer"]
-        date: datetime.date = SUMMER_SOLSTICE if is_summer else WINTER_SOLSTICE
 
         with st.spinner(s["spinner"]):
             try:
@@ -141,6 +139,8 @@ def render_main_page() -> None:
                 logger.warning("Geocoding failed for %r: %s", address, exc)
                 render_error(s["error_geocoding"])
                 return
+
+            date: datetime.date = resolve_solstice_date(is_summer, location.latitude)
 
             try:
                 solar_data = calculate_solar_position(

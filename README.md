@@ -1,94 +1,99 @@
 # ☀️ Sunspot
 
-Web app que traduz a trajetória solar em diagnósticos práticos para quem está avaliando a incidência de luz solar em um imóvel.
+Web app that translates solar trajectory data into practical diagnostics for anyone evaluating sunlight exposure in a property.
 
-Informe o endereço, o ângulo da janela principal e a época do ano — a aplicação retorna os horários de sol direto, o total de horas e recomendações sobre o imóvel.
+Enter the address, the main window angle, and the season — the app returns the direct sunlight hours, total duration, and practical recommendations about the property.
 
 ---
 
-## Requisitos
+## Requirements
 
 - Python 3.10
 - pip
 
 ---
 
-## Instalação
+## Installation
 
 ```bash
-# 1. Clone o repositório
-git clone <url-do-repositorio>
+# 1. Clone the repository
+git clone <repository-url>
 cd sunspot
 
-# 2. Crie o ambiente virtual
+# 2. Create the virtual environment
 python3.10 -m venv .venv
 source .venv/bin/activate
 
-# 3. Instale as dependências
+# 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Configure as variáveis de ambiente
+# 4. Configure environment variables
 cp .env.example .env
-# Edite .env e ajuste NOMINATIM_USER_AGENT
+# Edit .env and set NOMINATIM_USER_AGENT
 ```
 
 ---
 
-## Uso
+## Usage
 
 ```bash
-# Acesso local
+# Local access
 .venv/bin/streamlit run app.py
 
-# Acesso na rede local (outros devices)
+# Local network access (other devices)
 .venv/bin/streamlit run app.py --server.address 0.0.0.0
 ```
 
-Acesse em `http://localhost:8501` ou `http://<seu-ip>:8501`.
+Access at `http://localhost:8501` or `http://<your-ip>:8501`.
 
 ---
 
-## Como usar a aplicação
+## How to use
 
-1. **Endereço** — informe o endereço completo do imóvel
-2. **Ângulo da janela (azimute)** — direção para a qual a janela está voltada, em graus a partir do Norte (use a bússola do celular)
-   - 0° → Norte · 90° → Leste · 180° → Sul · 270° → Oeste
-3. **Época do ano** — Verão ou Inverno
-4. Clique em **Calcular Incidência Solar**
+1. **Address** — enter the full property address
+2. **Window angle (azimuth)** — the direction the main window faces, in degrees from North (use your phone's compass)
+   - 0° → North · 90° → East · 180° → South · 270° → West
+3. **Season** — Summer or Winter
+4. Click **Calculate Sun Exposure**
+
+The app automatically detects the hemisphere from the geocoded latitude and uses the correct solstice date for the selected season.
 
 ---
 
-## Variáveis de ambiente
+## Environment variables
 
-| Variável | Descrição | Padrão |
+| Variable | Description | Default |
 |---|---|---|
-| `NOMINATIM_USER_AGENT` | Identificador enviado ao serviço de geocodificação | `sunspot-mvp` |
+| `NOMINATIM_USER_AGENT` | Identifier sent to the geocoding service | `sunspot-mvp` |
 
 ---
 
-## Estrutura do projeto
+## Project structure
 
 ```
 sunspot/
-├── app.py                  # Entry point
+├── app.py                    # Entry point
 ├── requirements.txt
 ├── pyproject.toml
 ├── .env.example
 └── app/
-    ├── config/settings.py  # Constantes e configurações
-    ├── domain/diagnostics.py # Regras de negócio
+    ├── config/settings.py    # Constants and configuration
+    ├── domain/diagnostics.py # Business rules
     ├── services/
-    │   ├── geolocation.py  # Geocodificação (geopy/Nominatim)
-    │   └── solar.py        # Posição solar (pvlib)
-    ├── ui/main_page.py     # Interface Streamlit
+    │   ├── geolocation.py    # Geocoding (geopy/Nominatim)
+    │   └── solar.py          # Solar position (pvlib)
+    ├── ui/
+    │   ├── main_page.py      # Streamlit interface
+    │   └── i18n.py           # UI translations (PT / EN)
     └── utils/
-        ├── angle.py        # Cálculo angular
-        └── exceptions.py   # Hierarquia de exceções
+        ├── angle.py          # Angular calculation helpers
+        ├── season.py         # Hemisphere-aware solstice resolution
+        └── exceptions.py     # Exception hierarchy
 ```
 
 ---
 
-## Qualidade de código
+## Code quality
 
 ```bash
 ruff check .
@@ -100,9 +105,9 @@ mypy .
 
 ## Stack
 
-| Biblioteca | Uso |
+| Library | Purpose |
 |---|---|
-| [Streamlit](https://streamlit.io) | Interface web |
-| [pvlib](https://pvlib-python.readthedocs.io) | Cálculo de posição solar |
-| [geopy](https://geopy.readthedocs.io) | Geocodificação de endereços |
-| [pandas](https://pandas.pydata.org) | Processamento de séries temporais |
+| [Streamlit](https://streamlit.io) | Web interface |
+| [pvlib](https://pvlib-python.readthedocs.io) | Solar position calculation |
+| [geopy](https://geopy.readthedocs.io) | Address geocoding |
+| [pandas](https://pandas.pydata.org) | Time series processing |
