@@ -1,0 +1,12 @@
+# Runtime
+streamlit==1.28.1
+geopy==2.3.0
+pvlib==0.10.3
+pandas==2.1.1
+pytz==2023.3
+python-dotenv==1.0.0
+
+# Code Quality
+ruff==0.1.6
+black==23.11.0
+mypy==1.7.0
