@@ -16,4 +16,4 @@ MIN_SOLAR_ELEVATION_DEGREES: float = 5.0
 ANGULAR_TOLERANCE_DEGREES: float = 90.0
 
 SUMMER_SOLSTICE: datetime.date = datetime.date(2024, 12, 21)  # Hemisfério Sul
-WINTER_SOLSTICE: datetime.date = datetime.date(2024, 6, 21)   # Hemisfério Sul
+WINTER_SOLSTICE: datetime.date = datetime.date(2024, 6, 21)  # Hemisfério Sul

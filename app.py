@@ -1,17 +1,13 @@
 """Sunspot — entry point da aplicação Streamlit."""
 
-import logging
-
 import streamlit as st
 
-logger = logging.getLogger(__name__)
+from app.ui.main_page import render_main_page
 
+st.set_page_config(
+    page_title="Sunspot",
+    page_icon="☀️",
+    layout="centered",
+)
 
-def main() -> None:
-    """Renderiza o layout inicial da aplicação."""
-    st.title("☀️ Sunspot")
-    st.subheader("Descubra o sol do seu próximo lar")
-
-
-if __name__ == "__main__":
-    main()
+render_main_page()

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 @dataclass(slots=True)
 class SolarData:
     times: pd.DatetimeIndex
-    azimuth: pd.Series    # degrees, 0–360
+    azimuth: pd.Series  # degrees, 0–360
     elevation: pd.Series  # degrees, -90 to 90
 
 
