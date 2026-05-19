@@ -27,6 +27,32 @@ class Strings(TypedDict):
 
 
 TRANSLATIONS: dict[str, Strings] = {
+    "English": {
+        "subtitle": "Discover the sunlight in your next home",
+        "address_label": "📍 Property address",
+        "address_placeholder": "e.g. 123 Main St, New York, NY",
+        "azimuth_label": "🧭 Main window angle (azimuth)",
+        "azimuth_help": "0° = North, 90° = East, 180° = South, 270° = West",
+        "season_label": "📅 Season",
+        "season_summer": "Summer",
+        "season_winter": "Winter",
+        "button_calculate": "Calculate Sun Exposure",
+        "error_empty_address": "Please enter the property address.",
+        "error_geocoding": (
+            "Address not found. Please check the address and try again."
+        ),
+        "error_solar": "Error calculating solar position. Please try again later.",
+        "spinner": "Calculating...",
+        "result_header": "☀️ Result",
+        "no_sun_warning": (
+            "This property receives no direct sunlight during this season."
+        ),
+        "metric_start": "Start",
+        "metric_end": "End",
+        "metric_total": "Total",
+        "facade_label": "🧭 Facade:",
+        "recommendations_header": "💡 Recommendations",
+    },
     "Português": {
         "subtitle": "Descubra o sol do seu próximo lar",
         "address_label": "📍 Endereço do imóvel",
@@ -54,31 +80,5 @@ TRANSLATIONS: dict[str, Strings] = {
         "metric_total": "Total",
         "facade_label": "🧭 Fachada:",
         "recommendations_header": "💡 Recomendações",
-    },
-    "English": {
-        "subtitle": "Discover the sunlight in your next home",
-        "address_label": "📍 Property address",
-        "address_placeholder": "e.g. 123 Main St, New York, NY",
-        "azimuth_label": "🧭 Main window angle (azimuth)",
-        "azimuth_help": "0° = North, 90° = East, 180° = South, 270° = West",
-        "season_label": "📅 Season",
-        "season_summer": "Summer",
-        "season_winter": "Winter",
-        "button_calculate": "Calculate Sun Exposure",
-        "error_empty_address": "Please enter the property address.",
-        "error_geocoding": (
-            "Address not found. Please check the address and try again."
-        ),
-        "error_solar": "Error calculating solar position. Please try again later.",
-        "spinner": "Calculating...",
-        "result_header": "☀️ Result",
-        "no_sun_warning": (
-            "This property receives no direct sunlight during this season."
-        ),
-        "metric_start": "Start",
-        "metric_end": "End",
-        "metric_total": "Total",
-        "facade_label": "🧭 Facade:",
-        "recommendations_header": "💡 Recommendations",
     },
 }

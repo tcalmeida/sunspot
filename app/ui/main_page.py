@@ -23,7 +23,7 @@ _LANGUAGES = list(TRANSLATIONS.keys())
 
 def _get_strings() -> Strings:
     """Return the string set for the currently selected language."""
-    lang: str = st.session_state.get("language", "Português")
+    lang: str = st.session_state.get("language", "English")
     return TRANSLATIONS[lang]
 
 
@@ -158,6 +158,7 @@ def render_main_page() -> None:
                 window_azimuth=window_azimuth,
                 angular_tolerance=ANGULAR_TOLERANCE_DEGREES,
                 min_elevation=MIN_SOLAR_ELEVATION_DEGREES,
+                language=st.session_state.get("language", "English"),
             )
 
         render_results(result, s)
